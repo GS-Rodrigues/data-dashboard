@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from database.queries import get_dollar
-from ai.agent_lme import chatGPT
+from ai.agent_lme import chatGPT_Dollar
 
 # ==========================
 # Configuração da página
@@ -117,7 +117,7 @@ ultima = df.iloc[-1]
 
 if len(df) >= 22:
 
-    valor_30_dias = df.iloc[-22]["valor"]
+    valor_30_dias = df.iloc[-22]["valor_compra"]
 
     variacao_30 = (
         (ultima.valor - valor_30_dias)
@@ -158,7 +158,7 @@ st.subheader(
 
 pergunta = st.text_input(
     "Olá, como posso lhe ajudar hoje?",
-    placeholder="Ex: Como está a tendência do alumínio?",
+    placeholder="Ex: Como está a tendência do dolar hoje?",
     max_chars=150
 )
 
@@ -169,7 +169,7 @@ enviar = st.button(
 
 if enviar and pergunta:
 
-    resposta = chatGPT(
+    resposta = chatGPT_Dollar(
         pergunta,
         ultima,
         variacao_30,
@@ -198,14 +198,14 @@ df36 = df[df["data_referencia"] >= data_limite]
 fig = px.line(
     df36,
     x="data_referencia",
-    y="valor",
+    y="valor_compra",
     markers=True
 )
 
 fig.update_layout(
     hovermode="x unified",
     xaxis_title="Data",
-    yaxis_title="USD",
+    yaxis_title="BRL",
     xaxis=dict(
         rangeselector=dict(
             buttons=[
@@ -269,7 +269,7 @@ df["trimestre"] = df["data_referencia"].apply(definir_trimestre)
 # Calcula média
 media_tri = (
     df
-    .groupby(["ano", "trimestre"], as_index=False)["valor"]
+    .groupby(["ano", "trimestre"], as_index=False)["valor_compra"]
     .mean()
 )
 
@@ -291,13 +291,13 @@ media_tri = media_tri.sort_values(
 fig2 = px.bar(
     media_tri,
     x="Periodo",
-    y="valor",
+    y="valor_compra",
     text_auto=".1f"
 )
 
 fig2.update_layout(
     xaxis_title="Período",
-    yaxis_title="Média USD",
+    yaxis_title="Média BRL",
     xaxis_tickangle=-45,
 
     xaxis=dict(
@@ -325,7 +325,7 @@ with st.expander("📋 Ver médias trimestrais"):
 
     st.dataframe(
         media_tri[
-            ["Periodo", "valor"]
+            ["Periodo", "valor_compra"]
         ],
         use_container_width=True
     )
@@ -339,15 +339,15 @@ st.subheader("📉 Tendência do mercado")
 
 if len(df) >= 22:
 
-    ultimo = df.iloc[-1]["valor"]
+    ultimo = df.iloc[-1]["valor_compra"]
 
-    anterior = df.iloc[-22]["valor"]
+    anterior = df.iloc[-22]["valor_compra"]
 
     variacao = variacao_30
 
     st.metric(
         label="Variação aproximada dos últimos 30 dias",
-        value=f"{ultimo:.2f} USD",
+        value=f"{ultimo:.2f} BRL",
         delta=f"{variacao:.2f}%"
     )
 
@@ -385,13 +385,13 @@ else:
 df_tendencia = df.copy()
 
 df_tendencia["MM30"] = (
-    df_tendencia["valor"]
+    df_tendencia["valor_compra"]
     .rolling(30)
     .mean()
 )
 
 df_tendencia["MM90"] = (
-    df_tendencia["valor"]
+    df_tendencia["valor_compra"]
     .rolling(90)
     .mean()
 )
@@ -401,7 +401,7 @@ fig_mm = px.line(
     df_tendencia,
     x="data_referencia",
     y=[
-        "valor",
+        "valor_compra",
         "MM30",
         "MM90"
     ],
@@ -412,7 +412,7 @@ fig_mm = px.line(
 fig_mm.update_layout(
     hovermode="x unified",
     xaxis_title="Data",
-    yaxis_title="USD",
+    yaxis_title="BRL",
 
     xaxis=dict(
         type="date",

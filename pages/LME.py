@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from database.queries import get_lme
-from ai.agent_lme import chatGPT
+from ai.agent_lme import chatGPT_LME
 
 # ==========================
 # Configuração da página
@@ -169,7 +169,7 @@ enviar = st.button(
 
 if enviar and pergunta:
 
-    resposta = chatGPT(
+    resposta = chatGPT_LME(
         pergunta,
         ultima,
         variacao_30,
