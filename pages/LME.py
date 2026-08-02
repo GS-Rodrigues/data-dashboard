@@ -10,7 +10,7 @@ from database.queries import get_lme
 # ==========================
 
 st.set_page_config(
-    page_title="London Metal Exchange",
+    page_title="LME | London Metal Exchange - Alumínio",
     page_icon="📈",
     layout="wide"
 )
@@ -37,42 +37,61 @@ ultima = df.iloc[-1]
 
 maior = df["valor"].max()
 menor = df["valor"].min()
-media = df["valor"].mean()
+
+
+# Variação 12 meses
+data_inicio_12m = (
+    df["data_referencia"].max()
+    - pd.DateOffset(months=12)
+)
+
+df12_temp = df[
+    df["data_referencia"] >= data_inicio_12m
+]
+
+variacao_12m = (
+    (df12_temp.iloc[-1]["valor"] - df12_temp.iloc[0]["valor"])
+    /
+    df12_temp.iloc[0]["valor"]
+) * 100
+
 
 col1, col2, col3, col4 = st.columns(4)
+
 
 col1.metric(
     "Última cotação",
     f"{ultima.valor:.2f} USD"
 )
 
+
 col2.metric(
+    "Variação 12 meses",
+    f"{variacao_12m:.2f}%"
+)
+
+
+col3.metric(
     "Máxima histórica",
     f"{maior:.2f} USD"
 )
 
-col3.metric(
+
+col4.metric(
     "Mínima histórica",
     f"{menor:.2f} USD"
 )
-
-col4.metric(
-    "Média histórica",
-    f"{media:.2f} USD"
-)
-
-st.divider()
 
 
 # ==========================
 # Últimos 12 meses
 # ==========================
 
-st.subheader("📈 Histórico dos últimos 12 meses")
+st.subheader("📈 Histórico dos últimos 3 anos")
 
 data_limite = (
     df["data_referencia"].max()
-    - pd.DateOffset(months=12)
+    - pd.DateOffset(months=36)
 )
 
 df12 = df[df["data_referencia"] >= data_limite]
@@ -257,8 +276,93 @@ else:
         "Ainda não existem dados suficientes para análise."
     )
 
-st.divider()
 
+# ==========================
+# Tendência com médias móveis
+# ==========================
+
+
+
+df_tendencia = df.copy()
+
+df_tendencia["MM30"] = (
+    df_tendencia["valor"]
+    .rolling(30)
+    .mean()
+)
+
+df_tendencia["MM90"] = (
+    df_tendencia["valor"]
+    .rolling(90)
+    .mean()
+)
+
+
+fig_mm = px.line(
+    df_tendencia,
+    x="data_referencia",
+    y=[
+        "valor",
+        "MM30",
+        "MM90"
+    ],
+    title="Preço e médias móveis"
+)
+
+
+fig_mm.update_layout(
+    hovermode="x unified",
+    xaxis_title="Data",
+    yaxis_title="USD",
+
+    xaxis=dict(
+        type="date",
+
+        rangeselector=dict(
+            buttons=[
+                dict(
+                    count=3,
+                    label="3M",
+                    step="month",
+                    stepmode="backward"
+                ),
+                dict(
+                    count=6,
+                    label="6M",
+                    step="month",
+                    stepmode="backward"
+                ),
+                dict(
+                    count=1,
+                    label="1A",
+                    step="year",
+                    stepmode="backward"
+                ),
+                dict(
+                    count=3,
+                    label="3A",
+                    step="year",
+                    stepmode="backward"
+                ),
+                dict(
+                    step="all",
+                    label="Tudo"
+                )
+            ]
+        ),
+
+        rangeslider=dict(
+            visible=True,
+            thickness=0.08
+        )
+    )
+)
+
+
+st.plotly_chart(
+    fig_mm,
+    use_container_width=True
+)
 
 # ==========================
 # Dados completos
