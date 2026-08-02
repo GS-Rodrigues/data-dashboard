@@ -96,16 +96,18 @@ def chatGPT(pergunta,ultima, variacao_30, media_3m, df):
         - Seja objetivo.
         """
 
+        try:
+            response = client.responses.create(
+                model="gpt-4o-mini",
+                input=f"""
+            {contexto}
 
-        response = client.responses.create(
-            model="gpt-4o-mini",
-            input=f"""
-        {contexto}
-
-        Pergunta do usuário:
-        {pergunta}
-        """
-            )
+            Pergunta do usuário:
+            {pergunta}
+            """
+                )
+        except:
+            return "Desculpe, parece que este serviço está fora de ar no momento. Contacte o administrador do sistema."
 
 
         return response.output_text
