@@ -1,22 +1,272 @@
+import pandas as pd
+import plotly.express as px
 import streamlit as st
 
 from database.queries import get_lme
 
-df = get_lme()
+
+# ==========================
+# Configuração da página
+# ==========================
+
+st.set_page_config(
+    page_title="London Metal Exchange",
+    page_icon="📈",
+    layout="wide"
+)
 
 st.title("📈 London Metal Exchange")
 
+
+# ==========================
+# Carrega dados
+# ==========================
+
+df = get_lme()
+
+df["data_referencia"] = pd.to_datetime(df["data_referencia"])
+
+df = df.sort_values("data_referencia")
+
+
+# ==========================
+# Cards principais
+# ==========================
+
 ultima = df.iloc[-1]
 
-st.metric(
-    label="Último valor",
-    value=f"{ultima.valor:.2f} USD"
+maior = df["valor"].max()
+menor = df["valor"].min()
+media = df["valor"].mean()
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.metric(
+    "Última cotação",
+    f"{ultima.valor:.2f} USD"
 )
 
-st.line_chart(
-    df,
+col2.metric(
+    "Máxima histórica",
+    f"{maior:.2f} USD"
+)
+
+col3.metric(
+    "Mínima histórica",
+    f"{menor:.2f} USD"
+)
+
+col4.metric(
+    "Média histórica",
+    f"{media:.2f} USD"
+)
+
+st.divider()
+
+
+# ==========================
+# Últimos 12 meses
+# ==========================
+
+st.subheader("📈 Histórico dos últimos 12 meses")
+
+data_limite = (
+    df["data_referencia"].max()
+    - pd.DateOffset(months=12)
+)
+
+df12 = df[df["data_referencia"] >= data_limite]
+
+fig = px.line(
+    df12,
     x="data_referencia",
-    y="valor"
+    y="valor",
+    markers=True
 )
 
-st.dataframe(df)
+fig.update_layout(
+    hovermode="x unified",
+    xaxis_title="Data",
+    yaxis_title="USD",
+    xaxis=dict(
+        rangeselector=dict(
+            buttons=[
+                dict(count=1, label="1M", step="month", stepmode="backward"),
+                dict(count=3, label="3M", step="month", stepmode="backward"),
+                dict(count=6, label="6M", step="month", stepmode="backward"),
+                dict(count=1, label="1A", step="year", stepmode="backward"),
+                dict(step="all", label="Tudo"),
+            ]
+        ),
+        rangeslider=dict(
+            visible=True
+        ),
+        type="date"
+    )
+)
+
+st.plotly_chart(
+    fig,
+    use_container_width=True
+)
+
+
+# ==========================
+# Média trimestral
+# ==========================
+
+st.subheader("📊 Média trimestral")
+
+
+def definir_trimestre(data):
+
+    mes = data.month
+
+    if mes in [1, 2, 3]:
+        return 1
+
+    elif mes in [4, 5, 6]:
+        return 2
+
+    elif mes in [7, 8, 9]:
+        return 3
+
+    else:
+        return 4
+
+
+nome_trimestre = {
+    1: "Jan-Mar",
+    2: "Abr-Jun",
+    3: "Jul-Set",
+    4: "Out-Dez"
+}
+
+
+# Cria ano e trimestre
+df["ano"] = df["data_referencia"].dt.year
+df["trimestre"] = df["data_referencia"].apply(definir_trimestre)
+
+
+# Calcula média
+media_tri = (
+    df
+    .groupby(["ano", "trimestre"], as_index=False)["valor"]
+    .mean()
+)
+
+
+# Nome amigável
+media_tri["Periodo"] = (
+    media_tri["ano"].astype(str)
+    + " - "
+    + media_tri["trimestre"].map(nome_trimestre)
+)
+
+
+# Ordenação correta
+media_tri = media_tri.sort_values(
+    ["ano", "trimestre"]
+)
+
+
+fig2 = px.bar(
+    media_tri,
+    x="Periodo",
+    y="valor",
+    text_auto=".1f"
+)
+
+fig2.update_layout(
+    xaxis_title="Período",
+    yaxis_title="Média USD",
+    xaxis_tickangle=-45,
+
+    xaxis=dict(
+        rangeselector=dict(
+            buttons=[
+                dict(count=4, label="4 Trim.", step="all"),
+                dict(count=8, label="8 Trim.", step="all"),
+                dict(step="all", label="Tudo")
+            ]
+        ),
+        rangeslider=dict(
+            visible=True
+        )
+    )
+)
+
+st.plotly_chart(
+    fig2,
+    use_container_width=True
+)
+
+
+# Mostrar tabela da média trimestral
+with st.expander("📋 Ver médias trimestrais"):
+
+    st.dataframe(
+        media_tri[
+            ["Periodo", "valor"]
+        ],
+        use_container_width=True
+    )
+
+
+# ==========================
+# Tendência
+# ==========================
+
+st.subheader("📉 Tendência do mercado")
+
+if len(df) >= 22:
+
+    ultimo = df.iloc[-1]["valor"]
+
+    anterior = df.iloc[-22]["valor"]
+
+    variacao = ((ultimo - anterior) / anterior) * 100
+
+    st.metric(
+        label="Variação aproximada dos últimos 30 dias",
+        value=f"{ultimo:.2f} USD",
+        delta=f"{variacao:.2f}%"
+    )
+
+    if variacao > 5:
+
+        st.success(
+            "📈 Tendência de alta nos últimos 30 dias."
+        )
+
+    elif variacao < -5:
+
+        st.error(
+            "📉 Tendência de queda nos últimos 30 dias."
+        )
+
+    else:
+
+        st.info(
+            "➡️ Mercado relativamente estável nos últimos 30 dias."
+        )
+
+else:
+
+    st.warning(
+        "Ainda não existem dados suficientes para análise."
+    )
+
+st.divider()
+
+
+# ==========================
+# Dados completos
+# ==========================
+
+with st.expander("📋 Visualizar tabela completa"):
+
+    st.dataframe(
+        df,
+        use_container_width=True
+    )
