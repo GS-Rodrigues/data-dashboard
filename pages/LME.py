@@ -177,10 +177,7 @@ if enviar and pergunta:
         df
     )
 
-    st.success("Análise:")
-
-    st.write(resposta)
-
+    st.success(f"Análise: {resposta}")
 
 # ==========================
 # Últimos 12 meses
