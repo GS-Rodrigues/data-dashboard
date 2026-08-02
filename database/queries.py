@@ -18,3 +18,19 @@ def get_lme():
     conn.close()
 
     return df
+
+def get_dollar():
+
+    conn = get_connection()
+
+    df = pd.read_sql("""
+        SELECT
+            data_referencia,
+            valor_compra
+        FROM valores_scraping_dolar
+        ORDER BY data_referencia
+    """, conn)
+
+    conn.close()
+
+    return df

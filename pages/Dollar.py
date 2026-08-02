@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from database.queries import get_lme
+from database.queries import get_dollar
 from ai.agent_lme import chatGPT
 
 # ==========================
@@ -10,19 +10,19 @@ from ai.agent_lme import chatGPT
 # ==========================
 
 st.set_page_config(
-    page_title="LME | London Metal Exchange - Alumínio",
+    page_title="Câmbio | Cotação Dollar-Real",
     page_icon="📈",
     layout="wide"
 )
 
-st.title("📈 London Metal Exchange")
+st.title("📈 Câmbio | Cotação Dollar-Real")
 
 
 # ==========================
 # Carrega dados
 # ==========================
 
-df = get_lme()
+df = get_dollar()
 
 df["data_referencia"] = pd.to_datetime(df["data_referencia"])
 
@@ -35,8 +35,8 @@ df = df.sort_values("data_referencia")
 
 ultima = df.iloc[-1]
 
-maior = df["valor"].max()
-menor = df["valor"].min()
+maior = df["valor_compra"].max()
+menor = df["valor_compra"].min()
 
 
 
@@ -51,9 +51,9 @@ df36_temp = df[
 ]
 
 variacao_12m = (
-    (df36_temp.iloc[-1]["valor"] - df36_temp.iloc[0]["valor"])
+    (df36_temp.iloc[-1]["valor_compra"] - df36_temp.iloc[0]["valor_compra"])
     /
-    df36_temp.iloc[0]["valor"]
+    df36_temp.iloc[0]["valor_compra"]
 ) * 100
 
 
@@ -62,7 +62,7 @@ col1, col2, col3, col4 = st.columns(4)
 
 col1.metric(
     "Última cotação",
-    f"{ultima.valor:.2f} USD"
+    f"{ultima.valor:.2f} BRL"
 )
 
 
@@ -74,13 +74,13 @@ col2.metric(
 
 col3.metric(
     "Máxima histórica",
-    f"{maior:.2f} USD"
+    f"{maior:.2f} BRL"
 )
 
 
 col4.metric(
     "Mínima histórica",
-    f"{menor:.2f} USD"
+    f"{menor:.2f} BRL"
 )
 
 # ==========================
@@ -97,7 +97,7 @@ df = df.sort_values(
 )
 
 # ==========================
-# Carrega dados LME
+# Carrega dados Dolar
 # ==========================
 
 df["data_referencia"] = (
