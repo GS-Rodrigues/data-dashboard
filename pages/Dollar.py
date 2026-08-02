@@ -62,25 +62,25 @@ col1, col2, col3, col4 = st.columns(4)
 
 col1.metric(
     "Última cotação",
-    f"{ultima.valor_compra:.2f} BRL"
+    f"{ultima.valor_compra:.4f} BRL"
 )
 
 
 col2.metric(
     "Variação 12 meses",
-    f"{variacao_12m:.2f}%"
+    f"{variacao_12m:.4f}%"
 )
 
 
 col3.metric(
     "Máxima histórica",
-    f"{maior:.2f} BRL"
+    f"{maior:.4f} BRL"
 )
 
 
 col4.metric(
     "Mínima histórica",
-    f"{menor:.2f} BRL"
+    f"{menor:.4f} BRL"
 )
 
 # ==========================
@@ -347,8 +347,8 @@ if len(df) >= 22:
 
     st.metric(
         label="Variação aproximada dos últimos 30 dias",
-        value=f"{ultimo:.2f} BRL",
-        delta=f"{variacao:.2f}%"
+        value=f"{ultimo:.4f} BRL",
+        delta=f"{variacao:.4f}%"
     )
 
     if variacao > 5:
