@@ -292,7 +292,7 @@ fig2 = px.bar(
     media_tri,
     x="Periodo",
     y="valor_compra",
-    text_auto=".1f"
+    text_auto=".4f"
 )
 
 fig2.update_layout(
@@ -348,7 +348,7 @@ if len(df) >= 22:
     st.metric(
         label="Variação aproximada dos últimos 30 dias",
         value=f"{ultimo:.4f} BRL",
-        delta=f"{variacao:.4f}%"
+        delta=f"{variacao:.2f}%"
     )
 
     if variacao > 5:
