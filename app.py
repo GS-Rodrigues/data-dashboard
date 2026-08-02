@@ -1,22 +1,27 @@
 import streamlit as st
 
-from database.queries import get_lme
-
-df = get_lme()
-
-st.title("📈 London Metal Exchange")
-
-ultima = df.iloc[-1]
-
-st.metric(
-    label="Último valor",
-    value=f"{ultima.valor:.2f} USD"
+st.set_page_config(
+    page_title="Data Dashboard",
+    page_icon="📊",
+    layout="wide"
 )
 
-st.line_chart(
-    df,
-    x="data_referencia",
-    y="valor"
-)
+st.title("📊 Data Dashboard")
 
-st.dataframe(df)
+st.write("""
+Bem-vindo ao meu dashboard de projetos de Engenharia de Dados.
+
+Cada página apresenta um pipeline diferente,
+com coleta automática, tratamento dos dados
+e armazenamento em PostgreSQL.
+""")
+
+st.divider()
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.info("📈 LME")
+
+with col2:
+    st.info("💱 Novos projetos em breve")
