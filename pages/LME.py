@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from database.queries import get_lme
-from ai.agent_lme import chatGPT_LME
+from ai.agent import chatGPT_LME
 
 # ==========================
 # Configuração da página

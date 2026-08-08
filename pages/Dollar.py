@@ -3,19 +3,19 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from database.queries import get_dollar
-from ai.agent_lme import chatGPT_Dollar
+from ai.agent import chatGPT_Dollar
 
 # ==========================
 # Configuração da página
 # ==========================
 
 st.set_page_config(
-    page_title="Câmbio | Cotação Dollar-Real",
-    page_icon="📈",
+    page_title="BRL | Cotação Cambio Dolar-Real",
+    page_icon="💵",
     layout="wide"
 )
 
-st.title("📈 Câmbio | Cotação Dollar-Real")
+st.title("💵 BRL | Cotação Cambio Dolar-Real")
 
 
 # ==========================
@@ -62,25 +62,25 @@ col1, col2, col3, col4 = st.columns(4)
 
 col1.metric(
     "Última cotação",
-    f"{ultima.valor_compra:.4f} BRL"
+    f"{ultima.valor:.2f} BRL"
 )
 
 
 col2.metric(
     "Variação 12 meses",
-    f"{variacao_12m:.4f}%"
+    f"{variacao_12m:.2f}%"
 )
 
 
 col3.metric(
     "Máxima histórica",
-    f"{maior:.4f} BRL"
+    f"{maior:.2f} BRL"
 )
 
 
 col4.metric(
     "Mínima histórica",
-    f"{menor:.4f} BRL"
+    f"{menor:.2f} BRL"
 )
 
 # ==========================
@@ -97,7 +97,7 @@ df = df.sort_values(
 )
 
 # ==========================
-# Carrega dados Dolar
+# Carrega dados Dollar
 # ==========================
 
 df["data_referencia"] = (
@@ -120,7 +120,7 @@ if len(df) >= 22:
     valor_30_dias = df.iloc[-22]["valor_compra"]
 
     variacao_30 = (
-        (ultima.valor_compra - valor_30_dias)
+        (ultima.valor - valor_30_dias)
         /
         valor_30_dias
     ) * 100
@@ -143,7 +143,7 @@ df_3m = df[
 ]
 
 
-media_3m = df_3m.valor_compra.mean()
+media_3m = df_3m.valor.mean()
 
 # ==========================
 # Agente
@@ -158,7 +158,7 @@ st.subheader(
 
 pergunta = st.text_input(
     "Olá, como posso lhe ajudar hoje?",
-    placeholder="Ex: Como está a tendência do dolar hoje?",
+    placeholder="Ex: Como está a tendência do dolar?",
     max_chars=150
 )
 
@@ -177,10 +177,7 @@ if enviar and pergunta:
         df
     )
 
-    st.success("Análise:")
-
-    st.write(resposta)
-
+    st.success(f"Análise: {resposta}")
 
 # ==========================
 # Últimos 12 meses
@@ -292,7 +289,7 @@ fig2 = px.bar(
     media_tri,
     x="Periodo",
     y="valor_compra",
-    text_auto=".4f"
+    text_auto=".1f"
 )
 
 fig2.update_layout(
@@ -347,7 +344,7 @@ if len(df) >= 22:
 
     st.metric(
         label="Variação aproximada dos últimos 30 dias",
-        value=f"{ultimo:.4f} BRL",
+        value=f"{ultimo:.2f} BRL",
         delta=f"{variacao:.2f}%"
     )
 
