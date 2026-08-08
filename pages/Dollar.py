@@ -62,7 +62,7 @@ col1, col2, col3, col4 = st.columns(4)
 
 col1.metric(
     "Última cotação",
-    f"{ultima.valor:.2f} BRL"
+    f"{ultima.valor_compra:.2f} BRL"
 )
 
 
@@ -120,7 +120,7 @@ if len(df) >= 22:
     valor_30_dias = df.iloc[-22]["valor_compra"]
 
     variacao_30 = (
-        (ultima.valor - valor_30_dias)
+        (ultima.valor_compra - valor_30_dias)
         /
         valor_30_dias
     ) * 100
@@ -143,7 +143,7 @@ df_3m = df[
 ]
 
 
-media_3m = df_3m.valor.mean()
+media_3m = df_3m.valor_compra.mean()
 
 # ==========================
 # Agente
