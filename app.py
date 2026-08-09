@@ -200,7 +200,7 @@ with col1:
 
     if st.button(
         "📈 Acessar Dashboard LME",
-        use_container_width=True
+        width="stretch"
     ):
         st.switch_page("pages/lme.py")
 
@@ -239,7 +239,7 @@ with col2:
 
     st.button(
         "🚧 Em desenvolvimento",
-        use_container_width=True,
+        width="stretch",
         disabled=True
     )
 
