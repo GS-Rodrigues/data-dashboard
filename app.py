@@ -147,12 +147,12 @@ with col2:
 
         st.write("")
 
-        st.button(
-            "🚧 Em desenvolvimento",
+        if st.button(
+            "💵 Acessar Dashboard",
             width="stretch",
-            disabled=True,
             key="dollar"
-        )
+        ):
+            st.switch_page("pages/Dollar.py")
 
 
 # =========================
