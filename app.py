@@ -1,89 +1,127 @@
 import streamlit as st
 
 
-# Configuração
+# =========================
+# CONFIGURAÇÃO
+# =========================
+
 st.set_page_config(
     page_title="Data Dashboard | Guilherme Rodrigues",
     page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
 
+# =========================
 # CSS
+# =========================
+
 st.markdown("""
 <style>
 
-    /* Remove espaçamento superior padrão */
     .block-container {
         padding-top: 3rem;
-        padding-bottom: 3rem;
+        padding-bottom: 2rem;
+        max-width: 1200px;
     }
 
-    /* Título principal */
+    .hero {
+        padding: 1rem 0 2rem 0;
+    }
+
     .hero-title {
         font-size: 3.2rem;
         font-weight: 700;
-        margin-bottom: 0.3rem;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
     }
 
     .hero-subtitle {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         color: #8b949e;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
-    /* Cards */
+    .hero-description {
+        font-size: 1rem;
+        color: #c9d1d9;
+        max-width: 750px;
+        line-height: 1.6;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 1.5rem 0 1rem 0;
+    }
+
     .project-card {
-        padding: 1.5rem;
+        padding: 1.6rem;
         border: 1px solid #30363d;
-        border-radius: 12px;
-        background-color: #161b22;
-        min-height: 190px;
-        transition: 0.2s;
+        border-radius: 14px;
+        background: #161b22;
+        min-height: 220px;
     }
 
-    .project-card:hover {
-        border-color: #58a6ff;
-        transform: translateY(-2px);
+    .project-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
     }
 
     .project-title {
-        font-size: 1.4rem;
+        font-size: 1.35rem;
         font-weight: 600;
-        margin-bottom: 0.7rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .project-subtitle {
+        color: #8b949e;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
     }
 
     .project-description {
-        color: #8b949e;
+        color: #c9d1d9;
         font-size: 0.95rem;
         line-height: 1.5;
     }
 
-    /* Tags */
     .tag {
         display: inline-block;
-        padding: 0.3rem 0.65rem;
-        margin: 0.2rem 0.2rem 0 0;
+        padding: 0.25rem 0.6rem;
+        margin: 0.25rem 0.2rem 0 0;
         border-radius: 20px;
-        background-color: #21262d;
+        background: #21262d;
         color: #c9d1d9;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
-    /* Seções */
-    .section-title {
+    .stack-card {
+        text-align: center;
+        padding: 1rem;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        background: #161b22;
+    }
+
+    .stack-icon {
         font-size: 1.5rem;
-        font-weight: 600;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
     }
 
-    /* Footer */
+    .stack-name {
+        font-weight: 600;
+        margin-top: 0.3rem;
+    }
+
+    .stack-description {
+        color: #8b949e;
+        font-size: 0.75rem;
+    }
+
     .footer {
         text-align: center;
         color: #8b949e;
-        margin-top: 4rem;
+        padding-top: 2.5rem;
         font-size: 0.85rem;
     }
 
@@ -95,22 +133,22 @@ st.markdown("""
 # HERO
 # =========================
 
-st.markdown(
-    '<div class="hero-title">📊 Data Dashboard</div>',
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="hero">
 
-st.markdown(
-    '<div class="hero-subtitle">'
-    'Projetos de Engenharia de Dados • Web Scraping • ETL • Analytics'
-    '</div>',
-    unsafe_allow_html=True
-)
+    <div class="hero-title">📊 Data Dashboard</div>
 
-st.write(
-    "Um conjunto de projetos voltados à coleta, tratamento, "
-    "armazenamento e visualização de dados de mercado."
-)
+    <div class="hero-subtitle">
+        Engenharia de Dados • Web Scraping • ETL • Analytics
+    </div>
+
+    <div class="hero-description">
+        Projetos desenvolvidos para coletar, processar, armazenar
+        e visualizar dados de mercado de forma automatizada.
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
 
 
 st.divider()
@@ -125,7 +163,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 col1, col2 = st.columns(2)
 
 
@@ -134,13 +171,19 @@ with col1:
     st.markdown("""
     <div class="project-card">
 
+        <div class="project-icon">🏭</div>
+
         <div class="project-title">
-            🏭 LME — Aluminum Market
+            LME
+        </div>
+
+        <div class="project-subtitle">
+            Aluminum Market Monitor
         </div>
 
         <div class="project-description">
-            Pipeline para coleta, tratamento e armazenamento
-            de dados do mercado europeu de alumínio (LME).
+            Pipeline para coleta, tratamento e análise de dados
+            do mercado europeu de alumínio (LME).
         </div>
 
         <br>
@@ -155,7 +198,10 @@ with col1:
 
     st.write("")
 
-    if st.button("📈 Acessar Dashboard LME", use_container_width=True):
+    if st.button(
+        "📈 Acessar Dashboard LME",
+        use_container_width=True
+    ):
         st.switch_page("pages/lme.py")
 
 
@@ -164,13 +210,19 @@ with col2:
     st.markdown("""
     <div class="project-card">
 
+        <div class="project-icon">💱</div>
+
         <div class="project-title">
-            💱 Currency Monitor
+            Câmbio
+        </div>
+
+        <div class="project-subtitle">
+            Currency Monitor
         </div>
 
         <div class="project-description">
             Pipeline para coleta e processamento de dados
-            de câmbio, integrado ao sistema de armazenamento.
+            de câmbio, com armazenamento estruturado.
         </div>
 
         <br>
@@ -183,33 +235,69 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
+    st.write("")
+
+    st.button(
+        "🚧 Em desenvolvimento",
+        use_container_width=True,
+        disabled=True
+    )
+
 
 # =========================
-# TECNOLOGIAS
+# STACK
 # =========================
 
 st.markdown(
-    '<div class="section-title">🛠️ Tecnologias</div>',
+    '<div class="section-title">🛠️ Stack</div>',
     unsafe_allow_html=True
 )
 
 col1, col2, col3, col4 = st.columns(4)
 
+
 with col1:
-    st.metric("🐍 Python", "Data")
+    st.markdown("""
+    <div class="stack-card">
+        <div class="stack-icon">🐍</div>
+        <div class="stack-name">Python</div>
+        <div class="stack-description">Pipelines & ETL</div>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 with col2:
-    st.metric("🗄️ PostgreSQL", "Database")
+    st.markdown("""
+    <div class="stack-card">
+        <div class="stack-icon">🗄️</div>
+        <div class="stack-name">PostgreSQL</div>
+        <div class="stack-description">Data Storage</div>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 with col3:
-    st.metric("⚙️ ETL", "Pipelines")
+    st.markdown("""
+    <div class="stack-card">
+        <div class="stack-icon">⚙️</div>
+        <div class="stack-name">GitHub Actions</div>
+        <div class="stack-description">Automation</div>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 with col4:
-    st.metric("📊 Streamlit", "Dashboard")
+    st.markdown("""
+    <div class="stack-card">
+        <div class="stack-icon">📊</div>
+        <div class="stack-name">Streamlit</div>
+        <div class="stack-description">Data Visualization</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # =========================
-# ARQUITETURA
+# FLUXO
 # =========================
 
 st.markdown(
@@ -218,8 +306,7 @@ st.markdown(
 )
 
 st.code(
-"""
-Fonte
+"""Fonte
   ↓
 Web Scraping
   ↓
@@ -227,8 +314,7 @@ Tratamento
   ↓
 PostgreSQL
   ↓
-Dashboard
-""",
+Dashboard""",
 language="text"
 )
 
@@ -237,12 +323,9 @@ language="text"
 # FOOTER
 # =========================
 
-st.markdown(
-    """
-    <div class="footer">
-        Desenvolvido por <b>Guilherme Rodrigues</b> ·
-        Ciência da Computação — UNICAMP
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="footer">
+    Desenvolvido por <b>Guilherme Rodrigues</b><br>
+    Ciência da Computação — UNICAMP
+</div>
+""", unsafe_allow_html=True)
