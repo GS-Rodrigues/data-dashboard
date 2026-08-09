@@ -18,112 +18,37 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+.block-container {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
 
-    .block-container {
-        padding-top: 3rem;
-        padding-bottom: 2rem;
-        max-width: 1200px;
-    }
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
 
-    .hero {
-        padding: 1rem 0 2rem 0;
-    }
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #8b949e;
+    margin-bottom: 1rem;
+}
 
-    .hero-title {
-        font-size: 3.2rem;
-        font-weight: 700;
-        line-height: 1.1;
-        margin-bottom: 0.5rem;
-    }
+.hero-description {
+    color: #c9d1d9;
+    font-size: 1rem;
+    max-width: 750px;
+    line-height: 1.6;
+}
 
-    .hero-subtitle {
-        font-size: 1.2rem;
-        color: #8b949e;
-        margin-bottom: 1rem;
-    }
-
-    .hero-description {
-        font-size: 1rem;
-        color: #c9d1d9;
-        max-width: 750px;
-        line-height: 1.6;
-    }
-
-    .section-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 1.5rem 0 1rem 0;
-    }
-
-    .project-card {
-        padding: 1.6rem;
-        border: 1px solid #30363d;
-        border-radius: 14px;
-        background: #161b22;
-        min-height: 220px;
-    }
-
-    .project-icon {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .project-title {
-        font-size: 1.35rem;
-        font-weight: 600;
-        margin-bottom: 0.2rem;
-    }
-
-    .project-subtitle {
-        color: #8b949e;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-    }
-
-    .project-description {
-        color: #c9d1d9;
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    .tag {
-        display: inline-block;
-        padding: 0.25rem 0.6rem;
-        margin: 0.25rem 0.2rem 0 0;
-        border-radius: 20px;
-        background: #21262d;
-        color: #c9d1d9;
-        font-size: 0.75rem;
-    }
-
-    .stack-card {
-        text-align: center;
-        padding: 1rem;
-        border: 1px solid #30363d;
-        border-radius: 10px;
-        background: #161b22;
-    }
-
-    .stack-icon {
-        font-size: 1.5rem;
-    }
-
-    .stack-name {
-        font-weight: 600;
-        margin-top: 0.3rem;
-    }
-
-    .stack-description {
-        color: #8b949e;
-        font-size: 0.75rem;
-    }
-
-    .footer {
-        text-align: center;
-        color: #8b949e;
-        padding-top: 2.5rem;
-        font-size: 0.85rem;
-    }
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
 
 </style>
 """, unsafe_allow_html=True)
@@ -133,22 +58,25 @@ st.markdown("""
 # HERO
 # =========================
 
-st.markdown("""
-<div class="hero">
+st.markdown(
+    '<div class="hero-title">📊 Data Dashboard</div>',
+    unsafe_allow_html=True
+)
 
-    <div class="hero-title">📊 Data Dashboard</div>
+st.markdown(
+    '<div class="hero-subtitle">'
+    'Engenharia de Dados • Web Scraping • ETL • Analytics'
+    '</div>',
+    unsafe_allow_html=True
+)
 
-    <div class="hero-subtitle">
-        Engenharia de Dados • Web Scraping • ETL • Analytics
-    </div>
-
-    <div class="hero-description">
-        Projetos desenvolvidos para coletar, processar, armazenar
-        e visualizar dados de mercado de forma automatizada.
-    </div>
-
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    '<div class="hero-description">'
+    'Projetos desenvolvidos para coletar, processar, armazenar '
+    'e visualizar dados de mercado de forma automatizada.'
+    '</div>',
+    unsafe_allow_html=True
+)
 
 
 st.divider()
@@ -163,85 +91,68 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 col1, col2 = st.columns(2)
 
 
+# ---------- LME ----------
+
 with col1:
 
-    st.markdown("""
-    <div class="project-card">
+    with st.container(border=True):
 
-        <div class="project-icon">🏭</div>
+        st.subheader("🏭 LME")
 
-        <div class="project-title">
-            LME
-        </div>
+        st.caption("Aluminum Market Monitor")
 
-        <div class="project-subtitle">
-            Aluminum Market Monitor
-        </div>
+        st.write(
+            "Pipeline para coleta, tratamento e análise de dados "
+            "do mercado europeu de alumínio (LME)."
+        )
 
-        <div class="project-description">
-            Pipeline para coleta, tratamento e análise de dados
-            do mercado europeu de alumínio (LME).
-        </div>
+        st.markdown(
+            "**Tecnologias:** "
+            "`Python` `Web Scraping` `PostgreSQL` `ETL`"
+        )
 
-        <br>
+        st.write("")
 
-        <span class="tag">Python</span>
-        <span class="tag">Web Scraping</span>
-        <span class="tag">PostgreSQL</span>
-        <span class="tag">ETL</span>
+        if st.button(
+            "📈 Acessar Dashboard",
+            width="stretch",
+            key="lme"
+        ):
+            st.switch_page("pages/LME.py")
 
-    </div>
-    """, unsafe_allow_html=True)
 
-    st.write("")
-
-    if st.button(
-        "📈 Acessar Dashboard LME",
-        width="stretch"
-    ):
-        st.switch_page("pages/lme.py")
-
+# ---------- CÂMBIO ----------
 
 with col2:
 
-    st.markdown("""
-    <div class="project-card">
+    with st.container(border=True):
 
-        <div class="project-icon">💱</div>
+        st.subheader("💱 Câmbio")
 
-        <div class="project-title">
-            Câmbio
-        </div>
+        st.caption("Currency Monitor")
 
-        <div class="project-subtitle">
-            Currency Monitor
-        </div>
+        st.write(
+            "Pipeline para coleta e processamento de dados "
+            "de câmbio, com armazenamento estruturado."
+        )
 
-        <div class="project-description">
-            Pipeline para coleta e processamento de dados
-            de câmbio, com armazenamento estruturado.
-        </div>
+        st.markdown(
+            "**Tecnologias:** "
+            "`Python` `Web Scraping` `SQL` `Automation`"
+        )
 
-        <br>
+        st.write("")
 
-        <span class="tag">Python</span>
-        <span class="tag">Web Scraping</span>
-        <span class="tag">SQL</span>
-        <span class="tag">Automation</span>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.write("")
-
-    st.button(
-        "🚧 Em desenvolvimento",
-        width="stretch",
-        disabled=True
-    )
+        st.button(
+            "🚧 Em desenvolvimento",
+            width="stretch",
+            disabled=True,
+            key="dollar"
+        )
 
 
 # =========================
@@ -253,47 +164,24 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 col1, col2, col3, col4 = st.columns(4)
 
 
 with col1:
-    st.markdown("""
-    <div class="stack-card">
-        <div class="stack-icon">🐍</div>
-        <div class="stack-name">Python</div>
-        <div class="stack-description">Pipelines & ETL</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric("🐍 Python", "Pipelines")
 
 
 with col2:
-    st.markdown("""
-    <div class="stack-card">
-        <div class="stack-icon">🗄️</div>
-        <div class="stack-name">PostgreSQL</div>
-        <div class="stack-description">Data Storage</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric("🗄️ PostgreSQL", "Database")
 
 
 with col3:
-    st.markdown("""
-    <div class="stack-card">
-        <div class="stack-icon">⚙️</div>
-        <div class="stack-name">GitHub Actions</div>
-        <div class="stack-description">Automation</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric("⚙️ GitHub Actions", "Automation")
 
 
 with col4:
-    st.markdown("""
-    <div class="stack-card">
-        <div class="stack-icon">📊</div>
-        <div class="stack-name">Streamlit</div>
-        <div class="stack-description">Data Visualization</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric("📊 Streamlit", "Dashboard")
 
 
 # =========================
@@ -301,12 +189,12 @@ with col4:
 # =========================
 
 st.markdown(
-    '<div class="section-title">🔄 Pipeline</div>',
+    '<div class="section-title">🔄 Data Pipeline</div>',
     unsafe_allow_html=True
 )
 
 st.code(
-"""Fonte
+    """Fonte
   ↓
 Web Scraping
   ↓
@@ -315,7 +203,7 @@ Tratamento
 PostgreSQL
   ↓
 Dashboard""",
-language="text"
+    language="text"
 )
 
 
@@ -323,9 +211,9 @@ language="text"
 # FOOTER
 # =========================
 
-st.markdown("""
-<div class="footer">
-    Desenvolvido por <b>Guilherme Rodrigues</b><br>
-    Ciência da Computação — UNICAMP
-</div>
-""", unsafe_allow_html=True)
+st.divider()
+
+st.caption(
+    "Desenvolvido por Guilherme Rodrigues • "
+    "Ciência da Computação — UNICAMP"
+)
