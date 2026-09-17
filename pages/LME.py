@@ -169,7 +169,7 @@ enviar = st.button(
 
 if enviar and pergunta:
 
-    resposta = chatGPT_LME(
+    resposta = agent_LME(
         pergunta,
         ultima,
         variacao_30,
