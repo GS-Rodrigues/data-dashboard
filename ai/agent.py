@@ -102,9 +102,9 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
             messages=[{"role": "user", "content": f"{contexto}\n\nPergunta do usuário:\n{pergunta}"}]
             )
 
-        except:
-            return "Desculpe, parece que este serviço está fora de ar no momento. Contacte o administrador do sistema."
-
+        except Exception as e:
+            print("Erro ao chamar a API:", e)
+            return f"Desculpe, ocorreu um erro: {e}"
 
         return response.content[0].text
 
