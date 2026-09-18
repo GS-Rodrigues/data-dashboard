@@ -53,7 +53,7 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
 
 
     else:
-        client = anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),
+        client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),
 )
 
         contexto = f"""
