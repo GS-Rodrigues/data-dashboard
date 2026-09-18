@@ -1,10 +1,10 @@
 import os
 
-from openai import OpenAI
+import anthropic
 import streamlit as st
 
 
-def chatGPT_LME(pergunta,ultima, variacao_30, media_3m, df):
+def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
     palavras_lme = [
     "alumínio",
     "aluminio",
@@ -53,10 +53,8 @@ def chatGPT_LME(pergunta,ultima, variacao_30, media_3m, df):
 
 
     else:
-        client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
-
+        client = anthropic(api_key=os.getenv("DB_HOST"),
+)
 
         contexto = f"""
 
@@ -97,23 +95,21 @@ def chatGPT_LME(pergunta,ultima, variacao_30, media_3m, df):
         """
 
         try:
-            response = client.responses.create(
-                model="gpt-4o-mini",
-                input=f"""
-            {contexto}
+            response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=1024,
+            messages=[{"role": "user", "content": f"{contexto}\n\nPergunta do usuário:\n{pergunta}"}]
+            )
 
-            Pergunta do usuário:
-            {pergunta}
-            """
-                )
         except:
             return "Desculpe, parece que este serviço está fora de ar no momento. Contacte o administrador do sistema."
 
 
-        return response.output_text
+        return response.content[0].text
 
 
-def chatGPT_Dollar(pergunta,ultima, variacao_30, media_3m, df):
+
+def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
     palavras_dollar = [
         # Dólar
         "dólar",
