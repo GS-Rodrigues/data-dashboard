@@ -87,7 +87,7 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
         {df.valor.min():.2f} USD
 
         histórico:
-        {df}
+        {df.to_string(index=False)}
 
 
         Regras:
