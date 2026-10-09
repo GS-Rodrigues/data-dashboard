@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from database.queries import get_dollar
-from ai.agent import chatGPT_Dollar
+from ai.agent import agent_Dollar
 
 # ==========================
 # Configuração da página
@@ -169,7 +169,7 @@ enviar = st.button(
 
 if enviar and pergunta:
 
-    resposta = chatGPT_Dollar(
+    resposta = agent_Dollar(
         pergunta,
         ultima,
         variacao_30,
