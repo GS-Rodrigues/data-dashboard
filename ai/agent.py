@@ -217,10 +217,7 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
 
 
     else:
-        client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
-
+        client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),
 
         contexto = f"""
 
