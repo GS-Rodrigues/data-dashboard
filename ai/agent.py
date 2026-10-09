@@ -213,7 +213,7 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
 
 
     else:
-        client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY")),
+        client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),)
 
         contexto = f"""
 
@@ -253,12 +253,12 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
         """
 
         try:
-                response = client.messages.create(
-                model="claude-haiku-4-5-20251001",
-                max_tokens=1024,
-                messages=[{"role": "user", "content": f"{contexto}\n\nPergunta do usuário:\n{pergunta}"}]
-                )
-                print(response)
+            response = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=1024,
+            messages=[{"role": "user", "content": f"{contexto}\n\nPergunta do usuário:\n{pergunta}"}]
+            )
+            print(response)
     
         except Exception as e:
             print("Erro ao chamar a API:", e)
