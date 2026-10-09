@@ -235,7 +235,7 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
         Dólar Comercial USD/BRL
 
         Última cotação:
-        {ultima.valor:.2f} USD
+        {ultima.valor_compra:.2f} USD
 
         Data da última cotação:
         {ultima.data_referencia.strftime("%d/%m/%Y")}
@@ -247,10 +247,10 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
         {media_3m:.2f} USD
 
         Máxima histórica:
-        {df.valor.max():.2f} USD
+        {df.valor_compra.max():.2f} USD
 
         Mínima histórica:
-        {df.valor.min():.2f} USD
+        {df.valor_compra.min():.2f} USD
         """
 
         try:
