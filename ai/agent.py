@@ -29,9 +29,7 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
     "alta"
     ]
 
-
     pergunta_lower = pergunta.lower()
-
 
     if not any(
         palavra in pergunta_lower
@@ -51,9 +49,7 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
             """
         )
 
-
     else:
-        print(os.getenv("ANTHROPIC_API_KEY"))
         client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),
 )
 
@@ -251,20 +247,20 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
 
         Mínima histórica:
         {df.valor_compra.min():.2f} USD
+
+        histórico:
+        {df.to_string(index=False)}
         """
 
         try:
-            response = client.responses.create(
-                model="gpt-4o-mini",
-                input=f"""
-            {contexto}
-
-            Pergunta do usuário:
-            {pergunta}
-            """
+                response = client.messages.create(
+                model="claude-haiku-4-5-20251001",
+                max_tokens=1024,
+                messages=[{"role": "user", "content": f"{contexto}\n\nPergunta do usuário:\n{pergunta}"}]
                 )
-        except:
-            return "Desculpe, parece que este serviço está fora de ar no momento. Contacte o administrador do sistema."
+    
+        except Exception as e:
+            print("Erro ao chamar a API:", e)
+            return f"Desculpe, ocorreu um erro: {e}"
 
-
-        return response.output_text
+        return response.content[0].text
