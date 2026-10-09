@@ -258,7 +258,6 @@ def agent_Dollar(pergunta,ultima, variacao_30, media_3m, df):
             max_tokens=1024,
             messages=[{"role": "user", "content": f"{contexto}\n\nPergunta do usuário:\n{pergunta}"}]
             )
-            print(response)
     
         except Exception as e:
             print("Erro ao chamar a API:", e)
