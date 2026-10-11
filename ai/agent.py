@@ -1,5 +1,5 @@
 import os
-
+from database.news.scraping import coletar_todas_as_fontes
 import anthropic
 import streamlit as st
 
@@ -52,6 +52,7 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
     else:
         client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),
 )
+        noticias = coletar_todas_as_fontes()
 
         contexto = f"""
 
@@ -85,6 +86,8 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
         histórico:
         {df.to_string(index=False)}
 
+        noticias: 
+        {noticias}
 
         Regras:
 
@@ -92,6 +95,8 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
         - Explique os indicadores.
         - Não invente dados que não estão disponíveis.
         - Seja objetivo.
+        - Ao usar dados de noticias, mencione o link e a fonte.
+        - Deixe claro que são analises feitas base as informações disponiveis, mas podem conter erros.
         """
 
         try:
