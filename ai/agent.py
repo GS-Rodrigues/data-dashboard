@@ -53,7 +53,19 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
         client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"),
 )
         noticias = coletar_todas_as_fontes()
+        # Últimos 30 registros, em vez do histórico inteiro
+        historico_recente = df.tail(30).to_string(index=False)
 
+        # Limita a quantidade de notícias
+        noticias_resumidas = [
+            {
+                "titulo": n["titulo"],
+                "fonte": n["fonte"],
+                "link": n["link"],
+                "data": n["data"]
+            }
+            for n in noticias[:10]
+        ]
         contexto = f"""
 
         Você é um analista especializado no mercado London Metal Exchange (LME).
@@ -84,10 +96,10 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
         {df.valor.min():.2f} USD
 
         histórico:
-        {df.to_string(index=False)}
+        {historico_recente}
 
         noticias: 
-        {noticias}
+        {noticias_resumidas}
 
         Regras:
 
