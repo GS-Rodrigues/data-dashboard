@@ -106,7 +106,7 @@ def agent_LME(pergunta,ultima, variacao_30, media_3m, df):
         - Responda somente sobre LME e metais.
         - Explique os indicadores.
         - Não invente dados que não estão disponíveis.
-        - Seja objetivo.
+        - Seja objetivo, mas explicativo suficiente. 
         - Ao usar dados de noticias, mencione o link e a fonte.
         - Deixe claro que são analises feitas base as informações disponiveis, mas podem conter erros.
         """
